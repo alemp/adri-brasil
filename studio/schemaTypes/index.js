@@ -48,7 +48,8 @@ const siteSettings = {
   name: 'siteSettings', title: 'Site settings', type: 'document',
   fields: [
     localized('tagline', 'Tagline'),
-    localized('about', 'About text', 'text'),
+    localized('aboutShort', 'About intro (short)', 'text'),
+    localized('about', 'About text (full story)', 'text'),
     { name: 'heroImage', title: 'Hero background image', type: 'image', options: { hotspot: true } },
     { name: 'learnImage', title: 'Learn photo', type: 'image', options: { hotspot: true } },
     { name: 'djImage', title: 'DJ photo', type: 'image', options: { hotspot: true } },

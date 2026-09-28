@@ -89,7 +89,7 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
     <div class="wrap split">
       <div>
         <h2>{u.aboutH}</h2>
-        <p>{u.aboutShort}</p>
+        <p>{t(s?.aboutShort, lang)}</p>
         {t(s?.about, lang) && <details class="story"><summary class="btn alt">{u.story}</summary><p>{t(s.about, lang)}</p></details>}
       </div>
       <div class="ph" style={`min-height:320px;background:${s?.aboutImage ? `url(${img(s.aboutImage, 900)}) center/cover, ` : ''}linear-gradient(200deg,#3A2A8C,#FF5C8A)`}></div>
