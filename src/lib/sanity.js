@@ -18,4 +18,5 @@ export const upcomingEvents = () =>
 export const pastEvents = () =>
   sanity.fetch(`*[_type=="event" && status!="cancelled" && start < now()] | order(start desc) ${EVENT}`);
 export const artists = () => sanity.fetch(`*[_type=="artist"] | order(year desc, name asc)`);
-export const settings = () => sanity.fetch(`*[_type=="siteSettings"][0]`);
+export const curriculum = () => sanity.fetch(`*[_type=="curriculumLevel"] | order(order asc)`);
+export const settings =() => sanity.fetch(`*[_type=="siteSettings"][0]`);

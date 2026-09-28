@@ -9,11 +9,15 @@ const u = ui[lang];
 const [up, past] = await Promise.all([upcomingEvents(), pastEvents()]);
 ---
 <Base lang={lang} title={`${u.events} | Adrí Brasil`}>
-  <h2>{u.next}</h2>
-  <div id="upcoming">{up.map((e) => <EventCard event={e} lang={lang} />)}</div>
-  {up.length === 0 && <p>{u.none}</p>}
-  <h2>{u.past}</h2>
-  <div id="past">{past.map((e) => <EventCard event={e} lang={lang} upcoming={false} />)}</div>
+  <section class="events">
+    <div class="wrap">
+      <h2>{u.next}</h2>
+      <div class="evgrid" id="upcoming">{up.map((e) => <EventCard event={e} lang={lang} />)}</div>
+      {up.length === 0 && <p>{u.none}</p>}
+      <h2>{u.past}</h2>
+      <div class="evgrid" id="past">{past.map((e) => <EventCard event={e} lang={lang} upcoming={false} />)}</div>
+    </div>
+  </section>
   <!-- Between daily rebuilds, hide upcoming events whose start time has passed. -->
   <script>
     const now = Date.now();

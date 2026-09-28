@@ -30,7 +30,7 @@ const artist = {
     { name: 'city', title: 'City', type: 'string' },
     { name: 'year', title: 'Year', type: 'number' },
     { name: 'photo', title: 'Photo', type: 'image', options: { hotspot: true } },
-    { name: 'videoUrl', title: 'Video link (YouTube/Vimeo)', type: 'url' },
+    { name: 'videoUrl', title: 'Video / photos link', type: 'url' },
   ],
   preview: { select: { title: 'name', subtitle: 'city' } },
 };
@@ -48,6 +48,7 @@ const siteSettings = {
   name: 'siteSettings', title: 'Site settings', type: 'document',
   fields: [
     localized('tagline', 'Tagline'),
+    localized('about', 'About text', 'text'),
     { name: 'heroImage', title: 'Hero background image', type: 'image', options: { hotspot: true } },
     { name: 'email', title: 'Contact email', type: 'string' },
     { name: 'instagram', title: 'Instagram URL', type: 'url' },

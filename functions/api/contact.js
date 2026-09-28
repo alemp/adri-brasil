@@ -16,7 +16,7 @@ export async function onRequestPost({ request, env }) {
     body: JSON.stringify({
       from: env.CONTACT_FROM, to: env.CONTACT_TO, reply_to: f.get('email'),
       subject: `Booking request from ${esc(f.get('name'))}`,
-      html: `<p><b>${esc(f.get('name'))}</b> (${esc(f.get('email'))})</p><p>${esc(f.get('message'))}</p>`,
+      html: `<p><b>${esc(f.get('name'))}</b> (${esc(f.get('email'))})</p><p><b>${esc(f.get('type'))}</b></p><p>${esc(f.get('message'))}</p>`,
     }),
   });
   return new Response(res.ok ? 'ok' : 'send failed', { status: res.ok ? 200 : 502 });

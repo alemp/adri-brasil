@@ -2,38 +2,184 @@
 import Base from '../../layouts/Base.astro';
 import EventCard from '../../components/EventCard.astro';
 import { langs, ui } from '../../lib/i18n.js';
-import { upcomingEvents, settings, t } from '../../lib/sanity.js';
+import { upcomingEvents, settings, artists, curriculum, img, t } from '../../lib/sanity.js';
 export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
 const { lang } = Astro.params;
 const u = ui[lang];
-const [events, s] = await Promise.all([upcomingEvents(), settings()]);
+const [events, s, crew, levels] = await Promise.all([upcomingEvents(), settings(), artists(), curriculum()]);
+// One chip per artist; newest year first (query order), link to photos when there are any.
+const names = [...new Map(crew.map((a) => [a.name.replace(/ \(.*\)$/, ''), a.videoUrl])).entries()];
+const flags = ['#FFC93C', '#FF5C8A', '#2FBF71', '#FFF4DC'];
+const bunting = Array.from({ length: 16 }, (_, i) => {
+  const x = 40 + i * 72, y = 6 + 38 * Math.sin(Math.PI * (x / 1200)) * 0.98;
+  return { points: `${x - 26},${y} ${x + 26},${y} ${x},${y + 44}`, fill: flags[i % 4] };
+});
 ---
 <Base lang={lang}>
-  <h1>100% Forró</h1>
-  <p>{t(s?.tagline, lang) || 'Berlin-based, available worldwide.'}</p>
-  <a class="btn" href={`/${lang}/events/`}>{u.events}</a>
+  <section class="hero" aria-label="Intro">
+    <div class="bg" aria-hidden="true" style={s?.heroImage && `--herobg:url(${img(s.heroImage, 1800)})`}></div>
+    <svg id="bunting" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 6 Q600 44 1200 6" fill="none" stroke="#FFF4DC" stroke-width="2" />
+      {bunting.map((f) => <polygon points={f.points} fill={f.fill} />)}
+    </svg>
+    <div class="wrap">
+      <h1>100% Forró<span>Adrí Brasil</span></h1>
+      <p>{t(s?.tagline, lang) || u.hero}</p>
+      <div class="cta"><a class="btn" href="#events">{u.seeEvents}</a><a class="btn alt" href="#contact">{u.bookMe}</a></div>
+    </div>
+  </section>
 
-  <h2>{u.next}</h2>
-  {events.slice(0, 3).map((e) => <EventCard event={e} lang={lang} />)}
-  {events.length === 0 && <p>{u.none}</p>}
+  <section class="events" id="events">
+    <div class="wrap">
+      <h2>{u.next}</h2>
+      <div class="evgrid">
+        {events.slice(0, 2).map((e) => <EventCard event={e} lang={lang} />)}
+        <article class="ev">
+          <div class="date">{u.odDate}<small>{u.odSmall}</small></div>
+          <h3>{u.odTitle}</h3>
+          <p>{u.odText}</p>
+          <details><summary>{u.more}</summary><p>{u.odDet}</p><a href="#contact">{u.book}</a></details>
+        </article>
+      </div>
+      <p class="all"><a href={`/${lang}/events/`}>{u.allEvents}</a></p>
+    </div>
+  </section>
 
-  <h2 id="contact">{u.book}</h2>
-  <form id="f" style="display:grid;gap:12px;max-width:520px">
-    <label>{u.name}<input name="name" required /></label>
-    <label>{u.email}<input name="email" type="email" required /></label>
-    <label>{u.msg}<textarea name="message" rows="4"></textarea></label>
-    <input name="website" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
-    <div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITEKEY}></div>
-    <button class="btn" type="submit">{u.send}</button>
-    <p id="status" role="status"></p>
-  </form>
+  <section id="doors">
+    <div class="wrap">
+      <h2>{u.doors}</h2>
+      <div class="doors">
+        <a class="door" href="#workshops"><div class="ph" style="background:linear-gradient(160deg,var(--pink),#8A2F7B)"></div><h3>{u.d1}</h3><p>{u.d1p}</p></a>
+        <a class="door" href="#dj"><div class="ph" style="background:linear-gradient(160deg,var(--leaf),#0E5C56)"></div><h3>{u.d2}</h3><p>{u.d2p}</p></a>
+        <a class="door" href="#artists"><div class="ph" style="background:linear-gradient(160deg,var(--sun),#C2581B)"></div><h3>{u.d3}</h3><p>{u.d3p}</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="tint" id="workshops">
+    <div class="wrap">
+      <h2>{u.workshops}</h2>
+      {['beginner', 'intermediate', 'advanced'].map((g) => (
+        <details class="level">
+          <summary>{u[g]}</summary>
+          <ul>{levels.filter((l) => l.group === g).map((l) => <li><strong>{t(l.title, lang)}</strong> {t(l.description, lang)}</li>)}</ul>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section id="dj">
+    <div class="wrap">
+      <h2>{u.djH}</h2>
+      <p class="lead">{u.djIntro}</p>
+      <ul class="gear">{s?.equipment?.map((x) => <li>{x}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="tint" id="about">
+    <div class="wrap split">
+      <div>
+        <h2>{u.aboutH}</h2>
+        <p>{u.aboutShort}</p>
+        {t(s?.about, lang) && <details class="story"><summary class="btn alt">{u.story}</summary><p>{t(s.about, lang)}</p></details>}
+      </div>
+      <div class="ph" style="min-height:320px;background:linear-gradient(200deg,#3A2A8C,#FF5C8A)"></div>
+    </div>
+  </section>
+
+  <section class="artists" id="artists">
+    <div class="wrap">
+      <h2>{u.artists}</h2>
+      <div class="names">{names.map(([n, url]) => url ? <a href={url}>{n}</a> : <span>{n}</span>)}</div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <h2>{u.contact}</h2>
+      <form id="f">
+        <label>{u.name}<input name="name" required autocomplete="name" /></label>
+        <label>{u.email}<input name="email" type="email" required autocomplete="email" /></label>
+        <label>{u.type}<select name="type">{u.types.map((o) => <option>{o}</option>)}</select></label>
+        <label>{u.msg}<textarea name="message"></textarea></label>
+        <input name="website" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+        <div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITEKEY}></div>
+        <button class="btn" type="submit">{u.send}</button>
+        <p id="status" role="status"></p>
+      </form>
+      <div id="thanks" role="status" hidden>{u.sent}</div>
+      <p class="side">
+        {s?.email && <a href={`mailto:${s.email}`}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>{s.email}</a>}
+        {s?.instagram && <a href={s.instagram}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".6" /></svg>@{s.instagram.split('/').filter(Boolean).pop()}</a>}
+      </p>
+    </div>
+  </section>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <script define:vars={{ ok: u.sent, fail: u.fail }}>
+  <script define:vars={{ fail: u.fail }}>
     document.getElementById('f').addEventListener('submit', async (e) => {
       e.preventDefault();
       const r = await fetch('/api/contact', { method: 'POST', body: new FormData(e.target) });
-      document.getElementById('status').textContent = r.ok ? ok : fail;
-      if (r.ok) e.target.reset();
+      if (!r.ok) return (document.getElementById('status').textContent = fail);
+      e.target.hidden = true;
+      document.getElementById('thanks').hidden = false;
     });
   </script>
 </Base>
+<style>
+  .hero { padding:0; position:relative; overflow:hidden; background:radial-gradient(120% 90% at 80% 10%,#3A2A8C 0%,var(--bg) 60%); }
+  .hero .bg { position:absolute; inset:0; background:var(--herobg,repeating-linear-gradient(115deg,#5B2A9A 0 60px,#7A2E9C 60px 120px)); background-size:cover; background-position:center; }
+  .hero .bg::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(20,25,90,.92) 0%,rgba(20,25,90,.6) 55%,rgba(20,25,90,.25) 100%); }
+  #bunting, .hero .wrap { position:relative; z-index:1; }
+  #bunting { display:block; width:100%; height:auto; transform-origin:50% 0; animation:sway 2.4s ease-out 1; }
+  @keyframes sway { 0% { transform:rotate(-1.2deg); } 40% { transform:rotate(.7deg); } 100% { transform:rotate(0); } }
+  .hero .wrap { padding-top:36px; padding-bottom:84px; }
+  .hero h1 { font-size:clamp(4.4rem,17vw,12rem); letter-spacing:-.03em; color:var(--sun); }
+  .hero h1 span { display:block; color:var(--ink); font-size:.34em; letter-spacing:-.01em; margin-top:10px; }
+  .hero p { max-width:34ch; font-size:1.2rem; color:var(--mute); margin:20px 0 28px; }
+  .cta { display:flex; gap:12px; flex-wrap:wrap; }
+
+  .events h2 { color:var(--bg); }
+  .evgrid { margin-bottom:0; }
+  .all { margin-top:26px; }
+  .all a { color:var(--bg); font-weight:600; }
+
+  .doors { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); }
+  .door { text-decoration:none; display:flex; flex-direction:column; gap:12px; }
+  .door .ph { min-height:230px; transition:transform .2s; }
+  .door:hover .ph, .door:focus-visible .ph { transform:translateY(-4px); }
+  .door h3 { font-size:1.7rem; }
+  .door p, .lead, .tint p { margin:0; color:var(--mute); }
+
+  .tint { background:var(--bg2); }
+  .level { background:var(--bg); border-radius:14px; padding:14px 18px; margin-bottom:12px; }
+  .level summary { cursor:pointer; font:800 1.4rem var(--disp); color:var(--sun); }
+  .level li { margin:8px 0; color:var(--mute); } .level strong { color:var(--ink); }
+  .gear { display:flex; flex-wrap:wrap; gap:10px; list-style:none; padding:0; margin:22px 0 0; }
+  .gear li { background:var(--bg2); border-radius:999px; padding:8px 16px; font-weight:600; font-size:15px; }
+
+  .split { display:grid; gap:34px; grid-template-columns:1fr 1fr; align-items:center; }
+  .split p { max-width:52ch; margin-bottom:20px; }
+  .story summary { list-style:none; } .story summary::-webkit-details-marker { display:none; }
+  .story[open] summary { display:none; }
+
+  .artists { padding:44px 0; background:var(--sun); color:var(--bg); }
+  .artists h2 { font-size:1.6rem; margin-bottom:16px; }
+  .names { display:flex; flex-wrap:wrap; gap:10px; }
+  .names > * { background:var(--bg); color:var(--ink); border-radius:999px; padding:8px 16px; font-weight:600; font-size:15px; text-decoration:none; }
+  .names a:hover { background:var(--pink); }
+
+  form { display:grid; gap:14px; max-width:560px; }
+  label { display:grid; gap:6px; font-weight:600; font-size:15px; }
+  input, select, textarea { font:400 16px var(--body); background:var(--bg2); color:var(--ink); border:2px solid #3b43a8; border-radius:10px; padding:12px; }
+  textarea { min-height:110px; resize:vertical; }
+  #thanks { background:var(--leaf); color:#06301b; border-radius:14px; padding:18px 20px; font-weight:600; max-width:560px; }
+  .side { display:flex; flex-wrap:wrap; gap:12px 28px; color:var(--mute); margin-top:22px; }
+  .side a { display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
+  .side a:hover { color:var(--sun); }
+  .side svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+  @media (max-width:760px) { .split { grid-template-columns:1fr; } }
+  @media (prefers-reduced-motion:reduce) { #bunting { animation:none; } .door .ph { transition:none; } }
+</style>
