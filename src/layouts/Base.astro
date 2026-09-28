@@ -1,6 +1,6 @@
 ---
 import { langs, ui } from '../lib/i18n.js';
-const { lang, title = 'Adrí Brasil | 100% Forró', description = 'Forró nights, workshops, DJ sets and live bands. Berlin-based.' } = Astro.props;
+const { lang, title = 'Adri Brasil | 100% Forró', description = 'Forró nights, workshops, DJ sets and live bands. Berlin-based.' } = Astro.props;
 const u = ui[lang];
 const here = (l) => Astro.url.pathname.replace(/^\/[a-z]{2}\//, `/${l}/`);
 ---
@@ -18,7 +18,7 @@ const here = (l) => Astro.url.pathname.replace(/^\/[a-z]{2}\//, `/${l}/`);
 <body>
   <header>
     <div class="wrap bar">
-      <a class="logo" href={`/${lang}/`}>Adrí Brasil</a>
+      <a class="logo" href={`/${lang}/`}>Adri Brasil</a>
       <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
       <nav id="nav">
         <a href={`/${lang}/events/`}>{u.events}</a>

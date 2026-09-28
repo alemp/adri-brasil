@@ -1,6 +1,6 @@
-# Adrí Brasil website (starter)
+# Adri Brasil website (starter)
 
-Astro static site + Sanity CMS + Cloudflare Pages. Adrí edits in Sanity Studio; each Publish rebuilds the site.
+Astro static site + Sanity CMS + Cloudflare Pages. Adri edits in Sanity Studio; each Publish rebuilds the site.
 
 ## Included
 - `/en /de /pt` home page and events page (upcoming and past, sorted by date)
@@ -14,7 +14,7 @@ from the homepage mockup, video click-to-load component.
 
 ## Setup
 1. **Sanity:** create a project at sanity.io/manage. In `studio/`: `npm i`, put the project ID in `studio/.env` as
-   `SANITY_STUDIO_PROJECT_ID=...`, run `npm run dev` and add a test event. `npm run deploy` gives Adrí his login URL.
+   `SANITY_STUDIO_PROJECT_ID=...`, run `npm run dev` and add a test event. `npm run deploy` gives Adri his login URL.
 2. **Site:** `cp .env.example .env`, fill `SANITY_PROJECT_ID`, then `npm i && npm run dev`.
 3. **Cloudflare Pages:** connect the GitHub repo. Build command `npm run build`, output `dist`. Add the env vars from
    `.env.example`. Create a Turnstile widget and a Resend API key (verify your sending domain).

@@ -4,7 +4,7 @@ import { schemaTypes } from './schemaTypes';
 
 export default defineConfig({
   name: 'adri-brasil',
-  title: 'Adrí Brasil',
+  title: 'Adri Brasil',
   projectId: process.env.SANITY_STUDIO_PROJECT_ID, // set in studio/.env
   dataset: 'production',
   plugins: [structureTool()],
