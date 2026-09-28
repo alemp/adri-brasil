@@ -65,6 +65,7 @@ const siteSettings = {
     { name: 'aboutImage', title: 'About photo (portrait)', type: 'image', options: { hotspot: true } },
     { name: 'email', title: 'Contact email', type: 'string' },
     { name: 'instagram', title: 'Instagram URL', type: 'url' },
+    { name: 'patreon', title: 'Patreon URL', type: 'url' },
     { name: 'equipment', title: 'DJ equipment list', type: 'array', of: [{ type: 'string' }] },
   ],
 };

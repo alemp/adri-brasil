@@ -118,6 +118,11 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
           <div><b>Instagram</b><span>{u.dm} @{s.instagram.split('/').filter(Boolean).pop()}</span></div>
           <div class="go" aria-hidden="true">→</div>
         </a>}
+        {s?.patreon && <a class="way patreon" href={s.patreon}>
+          <div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="14.5" cy="9.5" r="5.5" /><path d="M4 4v16" /></svg></div>
+          <div><b>Patreon</b><span>{u.support}</span></div>
+          <div class="go" aria-hidden="true">→</div>
+        </a>}
       </div>
       <div class="tips">
         <strong>{u.tips}</strong>
@@ -171,12 +176,12 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
   .names a:hover { background:var(--pink); }
 
   .contact .lead { max-width:52ch; margin:-14px 0 30px; }
-  .ways { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); max-width:760px; }
+  .ways { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
   .way { display:flex; gap:18px; align-items:center; text-decoration:none; background:var(--bg2); border-radius:18px; padding:22px 24px; transition:transform .15s, background .15s; }
   .way:hover { transform:translateY(-3px); background:#262e8f; }
   .icon { flex:none; width:58px; height:58px; border-radius:50%; display:grid; place-items:center; }
   .icon svg { width:28px; height:28px; fill:none; stroke:var(--bg); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-  .mail .icon { background:var(--sun); } .insta .icon { background:var(--pink); }
+  .mail .icon { background:var(--sun); } .insta .icon { background:var(--pink); } .patreon .icon { background:var(--leaf); }
   .way b { display:block; font:800 1.35rem/1.1 var(--disp); }
   .way span { display:block; color:var(--mute); font-size:15px; margin-top:4px; overflow-wrap:anywhere; }
   .way .go { margin-left:auto; font:800 1.6rem var(--disp); color:var(--sun); }
