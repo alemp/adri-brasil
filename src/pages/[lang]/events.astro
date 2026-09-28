@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import EventCard from '../../components/EventCard.astro';
+import { langs, ui } from '../../lib/i18n.js';
+import { upcomingEvents, pastEvents } from '../../lib/sanity.js';
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+const { lang } = Astro.params;
+const u = ui[lang];
+const [up, past] = await Promise.all([upcomingEvents(), pastEvents()]);
+---
+<Base lang={lang} title={`${u.events} | Adrí Brasil`}>
+  <h2>{u.next}</h2>
+  <div id="upcoming">{up.map((e) => <EventCard event={e} lang={lang} />)}</div>
+  {up.length === 0 && <p>{u.none}</p>}
+  <h2>{u.past}</h2>
+  <div id="past">{past.map((e) => <EventCard event={e} lang={lang} upcoming={false} />)}</div>
+  <!-- Between daily rebuilds, hide upcoming events whose start time has passed. -->
+  <script>
+    const now = Date.now();
+    document.querySelectorAll('[data-upcoming="true"]').forEach((el) => {
+      if (Date.parse(el.dataset.start) < now) el.hidden = true;
+    });
+  </script>
+</Base>

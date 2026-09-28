@@ -1,0 +1,22 @@
+---
+import { t, img } from '../lib/sanity.js';
+import { ui } from '../lib/i18n.js';
+const { event, lang, upcoming = true } = Astro.props;
+const when = new Date(event.start).toLocaleString(lang, { timeZone: 'Europe/Berlin', weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+---
+<article class="ev" data-start={event.start} data-upcoming={upcoming}>
+  {event.image && <img src={img(event.image, 240)} alt="" loading="lazy" />}
+  <div>
+    <strong>{when}</strong>
+    <h3>{t(event.title, lang)}</h3>
+    <p>{event.venue}{event.address ? `, ${event.address}` : ''}</p>
+    <p>{t(event.description, lang)}</p>
+    {event.mapUrl && <a href={event.mapUrl}>{ui[lang].details}</a>}
+    {event.ticketUrl && <a href={event.ticketUrl}> · {ui[lang].tickets}</a>}
+  </div>
+</article>
+<style>
+  .ev { display:grid; grid-template-columns:auto 1fr; gap:16px; background:var(--bg2); border-left:8px solid var(--pink); border-radius:12px; padding:16px; margin-bottom:14px; }
+  .ev img { width:120px; height:120px; object-fit:cover; border-radius:8px; }
+  h3 { margin:4px 0; }
+</style>

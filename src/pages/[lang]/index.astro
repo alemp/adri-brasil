@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import EventCard from '../../components/EventCard.astro';
+import { langs, ui } from '../../lib/i18n.js';
+import { upcomingEvents, settings, t } from '../../lib/sanity.js';
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+const { lang } = Astro.params;
+const u = ui[lang];
+const [events, s] = await Promise.all([upcomingEvents(), settings()]);
+---
+<Base lang={lang}>
+  <h1>100% Forró</h1>
+  <p>{t(s?.tagline, lang) || 'Berlin-based, available worldwide.'}</p>
+  <a class="btn" href={`/${lang}/events/`}>{u.events}</a>
+
+  <h2>{u.next}</h2>
+  {events.slice(0, 3).map((e) => <EventCard event={e} lang={lang} />)}
+  {events.length === 0 && <p>{u.none}</p>}
+
+  <h2 id="contact">{u.book}</h2>
+  <form id="f" style="display:grid;gap:12px;max-width:520px">
+    <label>{u.name}<input name="name" required /></label>
+    <label>{u.email}<input name="email" type="email" required /></label>
+    <label>{u.msg}<textarea name="message" rows="4"></textarea></label>
+    <input name="website" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+    <div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITEKEY}></div>
+    <button class="btn" type="submit">{u.send}</button>
+    <p id="status" role="status"></p>
+  </form>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script define:vars={{ ok: u.sent, fail: u.fail }}>
+    document.getElementById('f').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const r = await fetch('/api/contact', { method: 'POST', body: new FormData(e.target) });
+      document.getElementById('status').textContent = r.ok ? ok : fail;
+      if (r.ok) e.target.reset();
+    });
+  </script>
+</Base>
