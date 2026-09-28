@@ -11,9 +11,9 @@ const [events, s, crew, levels] = await Promise.all([upcomingEvents(), settings(
 const names = [...new Map(crew.map((a) => [a.name.replace(/ \(.*\)$/, ''), a.videoUrl])).entries()];
 // Service cards: photo from Site settings, gradient until one is uploaded.
 const doors = [
-  { k: 'd1', href: '#workshops', photo: s?.learnImage, grad: 'var(--pink),#8A2F7B' },
-  { k: 'd2', href: '#dj', photo: s?.djImage, grad: 'var(--leaf),#0E5C56' },
-  { k: 'd3', href: '#artists', photo: s?.bandsImage, grad: 'var(--sun),#C2581B' },
+  { k: 'learn', href: '#workshops', grad: 'var(--pink),#8A2F7B' },
+  { k: 'dj', href: '#dj', grad: 'var(--leaf),#0E5C56' },
+  { k: 'bands', href: '#artists', grad: 'var(--sun),#C2581B' },
 ];
 const flags =['#FFC93C', '#FF5C8A', '#2FBF71', '#FFF4DC'];
 const bunting = Array.from({ length: 16 }, (_, i) => {
@@ -29,8 +29,8 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
       {bunting.map((f) => <polygon points={f.points} fill={f.fill} />)}
     </svg>
     <div class="wrap">
-      <h1>100% Forró<span>Adri Brasil</span></h1>
-      <p>{t(s?.tagline, lang) || u.hero}</p>
+      <h1>{t(s?.heroTitle, lang)}<span>{t(s?.heroSubtitle, lang)}</span></h1>
+      <p>{t(s?.tagline, lang)}</p>
       <div class="cta"><a class="btn" href="#events">{u.seeEvents}</a><a class="btn alt" href="#contact">{u.bookMe}</a></div>
     </div>
   </section>
@@ -57,8 +57,8 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
       <div class="doors">
         {doors.map((d) => (
           <a class="door" href={d.href}>
-            <div class="ph" style={`background:${d.photo ? `url(${img(d.photo, 800)}) center/cover, ` : ''}linear-gradient(160deg,${d.grad})`}></div>
-            <h3>{u[d.k]}</h3><p>{u[`${d.k}p`]}</p>
+            <div class="ph" style={`background:${s?.[`${d.k}Image`] ? `url(${img(s[`${d.k}Image`], 800)}) center/cover, ` : ''}linear-gradient(160deg,${d.grad})`}></div>
+            <h3>{t(s?.[`${d.k}Title`], lang)}</h3><div class="rt" set:html={rich(t(s?.[`${d.k}Text`], lang))} />
           </a>
         ))}
       </div>
