@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import EventCard from '../../components/EventCard.astro';
 import { langs, ui } from '../../lib/i18n.js';
-import { upcomingEvents, settings, artists, curriculum, img, t } from '../../lib/sanity.js';
+import { upcomingEvents, settings, artists, curriculum, img, t, rich } from '../../lib/sanity.js';
 export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
 const { lang } = Astro.params;
 const u = ui[lang];
@@ -71,7 +71,7 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
       {['beginner', 'intermediate', 'advanced'].map((g) => (
         <details class="level">
           <summary>{u[g]}</summary>
-          <ul>{levels.filter((l) => l.group === g).map((l) => <li><strong>{t(l.title, lang)}</strong> {t(l.description, lang)}</li>)}</ul>
+          <ul>{levels.filter((l) => l.group === g).map((l) => <li><strong>{t(l.title, lang)}</strong><div class="rt" set:html={rich(t(l.description, lang))} /></li>)}</ul>
         </details>
       ))}
     </div>
@@ -89,8 +89,8 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
     <div class="wrap split">
       <div>
         <h2>{u.aboutH}</h2>
-        <p>{t(s?.aboutShort, lang)}</p>
-        {t(s?.about, lang) && <details class="story"><summary class="btn alt">{u.story}</summary><p>{t(s.about, lang)}</p></details>}
+        <div class="rt" set:html={rich(t(s?.aboutShort, lang))} />
+        {t(s?.about, lang) && <details class="story"><summary class="btn alt">{u.story}</summary><div class="rt" set:html={rich(t(s.about, lang))} /></details>}
       </div>
       <div class="ph" style={`min-height:320px;background:${s?.aboutImage ? `url(${img(s.aboutImage, 900)}) center/cover, ` : ''}linear-gradient(200deg,#3A2A8C,#FF5C8A)`}></div>
     </div>
@@ -162,6 +162,7 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
   .split p { max-width:52ch; margin-bottom:20px; }
   .story summary { list-style:none; } .story summary::-webkit-details-marker { display:none; }
   .story[open] summary { display:none; }
+  .split .rt { max-width:52ch; color:var(--mute); margin-bottom:20px; }
 
   .artists { padding:44px 0; background:var(--sun); color:var(--bg); }
   .artists h2 { font-size:1.6rem; margin-bottom:16px; }

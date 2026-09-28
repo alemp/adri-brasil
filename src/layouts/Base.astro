@@ -77,6 +77,8 @@ const here = (l) => Astro.url.pathname.replace(/^\/[a-z]{2}\//, `/${l}/`);
   .lang a[aria-current] { background:var(--ink); color:var(--bg); }
   .burger { display:none; background:none; border:0; color:var(--ink); font-size:26px; cursor:pointer; }
 
+  .rt :where(p, ul, ol) { margin:0 0 .7em; } .rt > :last-child { margin-bottom:0; }
+  .rt strong { color:inherit; font-weight:700; }
   .legal h1 { font-size:clamp(2.4rem,7vw,4rem); color:var(--sun); margin-bottom:12px; }
   .legal h2 { font-size:1.4rem; margin:32px 0 8px; }
   .legal p { max-width:70ch; color:var(--mute); margin:0; }

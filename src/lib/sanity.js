@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+import { toHTML } from '@portabletext/to-html';
 
 export const sanity = createClient({
   projectId: import.meta.env.SANITY_PROJECT_ID || 'g86661w2', // public ID, also visible in every image URL
@@ -11,6 +12,8 @@ const builder = imageUrlBuilder(sanity);
 export const img = (src, w = 1200) => builder.image(src).width(w).auto('format').url();
 // Localized field helper: falls back to English when a translation is empty.
 export const t = (field, lang) => field?.[lang] || field?.en || '';
+// Rich text (Portable Text) to HTML; plain strings from before the rich text switch still render.
+export const rich = (v) => (Array.isArray(v) ? toHTML(v) : v ? `<p>${String(v).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))}</p>` : '');
 
 const EVENT = `{_id, title, start, venue, address, mapUrl, ticketUrl, description, image, "series": series->title}`;
 export const upcomingEvents = () =>

@@ -1,5 +1,5 @@
 ---
-import { t, img } from '../lib/sanity.js';
+import { t, img, rich } from '../lib/sanity.js';
 import { ui } from '../lib/i18n.js';
 const { event, lang, upcoming = true } = Astro.props;
 const d = new Date(event.start);
@@ -14,7 +14,7 @@ const u = ui[lang];
   <details>
     <summary>{u.more}</summary>
     {event.address && <p>{event.address}</p>}
-    <p>{t(event.description, lang)}</p>
+    {event.description && <div class="rt" set:html={rich(t(event.description, lang))} />}
     {event.mapUrl && <a href={event.mapUrl}>{u.details}</a>}
     {event.ticketUrl && <> · <a href={event.ticketUrl}>{u.tickets}</a></>}
   </details>
@@ -31,5 +31,6 @@ const u = ui[lang];
   .ev p { margin:0; color:#3d3d70; font-size:15px; }
   .ev summary { margin-top:14px; font:600 15px var(--body); text-decoration:underline; cursor:pointer; list-style:none; }
   .ev summary::-webkit-details-marker { display:none; }
+  .ev .rt { color:#3d3d70; font-size:14px; margin-top:8px; }
   .ev details p, .ev details a { font-size:14px; margin-top:8px; }
 </style>

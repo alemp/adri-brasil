@@ -10,7 +10,7 @@ const event = {
     { name: 'address', title: 'Address', type: 'string' },
     { name: 'mapUrl', title: 'Map link', type: 'url' },
     { name: 'ticketUrl', title: 'Ticket link', type: 'url' },
-    localized('description', 'Description', 'text'),
+    localized('description', 'Description', 'richText'),
     { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
     { name: 'status', title: 'Status', type: 'string', initialValue: 'scheduled', options: { list: ['scheduled', 'cancelled'] } },
   ],
@@ -19,7 +19,7 @@ const event = {
 };
 const series = {
   name: 'series', title: 'Event series', type: 'document',
-  fields: [localized('title', 'Name'), localized('description', 'Description', 'text'), { name: 'image', title: 'Image', type: 'image' }],
+  fields: [localized('title', 'Name'), localized('description', 'Description', 'richText'), { name: 'image', title: 'Image', type: 'image' }],
   preview: { select: { title: 'title.en' } },
 };
 const artist = {
@@ -39,7 +39,7 @@ const curriculumLevel = {
   fields: [
     { name: 'order', title: 'Order', type: 'number', validation: (r) => r.required() },
     { name: 'group', title: 'Group', type: 'string', options: { list: ['beginner', 'intermediate', 'advanced'] } },
-    localized('title', 'Title'), localized('description', 'Description', 'text'),
+    localized('title', 'Title'), localized('description', 'Description', 'richText'),
   ],
   orderings: [{ title: 'Order', name: 'order', by: [{ field: 'order', direction: 'asc' }] }],
   preview: { select: { title: 'title.en', subtitle: 'group' } },
@@ -48,8 +48,8 @@ const siteSettings = {
   name: 'siteSettings', title: 'Site settings', type: 'document',
   fields: [
     localized('tagline', 'Tagline'),
-    localized('aboutShort', 'About intro (short)', 'text'),
-    localized('about', 'About text (full story)', 'text'),
+    localized('aboutShort', 'About intro (short)', 'richText'),
+    localized('about', 'About text (full story)', 'richText'),
     { name: 'heroImage', title: 'Hero background image', type: 'image', options: { hotspot: true } },
     { name: 'learnImage', title: 'Learn photo', type: 'image', options: { hotspot: true } },
     { name: 'djImage', title: 'DJ photo', type: 'image', options: { hotspot: true } },
