@@ -9,7 +9,13 @@ const u = ui[lang];
 const [events, s, crew, levels] = await Promise.all([upcomingEvents(), settings(), artists(), curriculum()]);
 // One chip per artist; newest year first (query order), link to photos when there are any.
 const names = [...new Map(crew.map((a) => [a.name.replace(/ \(.*\)$/, ''), a.videoUrl])).entries()];
-const flags = ['#FFC93C', '#FF5C8A', '#2FBF71', '#FFF4DC'];
+// Service cards: photo from Site settings, gradient until one is uploaded.
+const doors = [
+  { k: 'd1', href: '#workshops', photo: s?.learnImage, grad: 'var(--pink),#8A2F7B' },
+  { k: 'd2', href: '#dj', photo: s?.djImage, grad: 'var(--leaf),#0E5C56' },
+  { k: 'd3', href: '#artists', photo: s?.bandsImage, grad: 'var(--sun),#C2581B' },
+];
+const flags =['#FFC93C', '#FF5C8A', '#2FBF71', '#FFF4DC'];
 const bunting = Array.from({ length: 16 }, (_, i) => {
   const x = 40 + i * 72, y = 6 + 38 * Math.sin(Math.PI * (x / 1200)) * 0.98;
   return { points: `${x - 26},${y} ${x + 26},${y} ${x},${y + 44}`, fill: flags[i % 4] };
@@ -49,9 +55,12 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
     <div class="wrap">
       <h2>{u.doors}</h2>
       <div class="doors">
-        <a class="door" href="#workshops"><div class="ph" style="background:linear-gradient(160deg,var(--pink),#8A2F7B)"></div><h3>{u.d1}</h3><p>{u.d1p}</p></a>
-        <a class="door" href="#dj"><div class="ph" style="background:linear-gradient(160deg,var(--leaf),#0E5C56)"></div><h3>{u.d2}</h3><p>{u.d2p}</p></a>
-        <a class="door" href="#artists"><div class="ph" style="background:linear-gradient(160deg,var(--sun),#C2581B)"></div><h3>{u.d3}</h3><p>{u.d3p}</p></a>
+        {doors.map((d) => (
+          <a class="door" href={d.href}>
+            <div class="ph" style={`background:${d.photo ? `url(${img(d.photo, 800)}) center/cover, ` : ''}linear-gradient(160deg,${d.grad})`}></div>
+            <h3>{u[d.k]}</h3><p>{u[`${d.k}p`]}</p>
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -83,7 +92,7 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
         <p>{u.aboutShort}</p>
         {t(s?.about, lang) && <details class="story"><summary class="btn alt">{u.story}</summary><p>{t(s.about, lang)}</p></details>}
       </div>
-      <div class="ph" style="min-height:320px;background:linear-gradient(200deg,#3A2A8C,#FF5C8A)"></div>
+      <div class="ph" style={`min-height:320px;background:${s?.aboutImage ? `url(${img(s.aboutImage, 900)}) center/cover, ` : ''}linear-gradient(200deg,#3A2A8C,#FF5C8A)`}></div>
     </div>
   </section>
 

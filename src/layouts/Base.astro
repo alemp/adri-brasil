@@ -36,7 +36,7 @@ const here = (l) => Astro.url.pathname.replace(/^\/[a-z]{2}\//, `/${l}/`);
   <main id="top"><slot /></main>
   <footer>
     <div class="wrap">
-      <div><a href={`/${lang}/impressum/`}>Impressum</a><a href={`/${lang}/datenschutz/`}>Datenschutz</a></div>
+      <div><a href={`/${lang}/impressum/`}>Impressum</a><a href={`/${lang}/datenschutz/`}>{u.privacy}</a></div>
       <div>{u.foot}</div>
     </div>
   </footer>
@@ -77,6 +77,10 @@ const here = (l) => Astro.url.pathname.replace(/^\/[a-z]{2}\//, `/${l}/`);
   .lang a[aria-current] { background:var(--ink); color:var(--bg); }
   .burger { display:none; background:none; border:0; color:var(--ink); font-size:26px; cursor:pointer; }
 
+  .legal h1 { font-size:clamp(2.4rem,7vw,4rem); color:var(--sun); margin-bottom:12px; }
+  .legal h2 { font-size:1.4rem; margin:32px 0 8px; }
+  .legal p { max-width:70ch; color:var(--mute); margin:0; }
+  .legal .note { margin-top:32px; font-size:14px; }
   footer { background:#0d1040; padding:34px 0 40px; color:var(--mute); font-size:14px; }
   footer .wrap { display:flex; flex-wrap:wrap; gap:12px 26px; justify-content:space-between; }
   footer a { margin-right:16px; }
