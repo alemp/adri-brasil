@@ -1,2 +1,2 @@
 import { defineConfig } from 'astro/config';
-export default defineConfig({ output: 'static', site: 'https://www.adri-brasi.de' });
+export default defineConfig({ output: 'static', site: 'https://www.adri-brasil.de' });
