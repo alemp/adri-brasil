@@ -63,6 +63,8 @@ const siteSettings = {
     localized('bandsText', 'Bands description', 'richText'),
     { name: 'bandsImage', title: 'Bands photo', type: 'image', options: { hotspot: true } },
     { name: 'aboutImage', title: 'About photo (portrait)', type: 'image', options: { hotspot: true } },
+    { name: 'onDemandImage', title: '"On demand" event card image', type: 'image', options: { hotspot: true } },
+    { name: 'contactImage', title: 'Booking banner (shown whole, under the "Book Adri" title)', type: 'image' },
     { name: 'email', title: 'Contact email', type: 'string' },
     { name: 'instagram', title: 'Instagram URL', type: 'url' },
     { name: 'patreon', title: 'Patreon URL', type: 'url' },

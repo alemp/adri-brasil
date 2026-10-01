@@ -41,6 +41,7 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
       <div class="evgrid">
         {events.slice(0, 2).map((e) => <EventCard event={e} lang={lang} />)}
         <article class="ev">
+          {s?.onDemandImage && <img src={img(s.onDemandImage, 600)} alt="" loading="lazy" />}
           <div class="date">{u.odDate}<small>{u.odSmall}</small></div>
           <h3>{u.odTitle}</h3>
           <p>{u.odText}</p>
@@ -106,6 +107,7 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
   <section class="contact" id="contact">
     <div class="wrap">
       <h2>{u.contact}</h2>
+      {s?.contactImage && <img class="banner" src={img(s.contactImage, 2000)} alt="" loading="lazy" />}
       <p class="lead">{u.contactLead}</p>
       <div class="ways">
         {s?.email && <a class="way mail" href={`mailto:${s.email}`}>
@@ -176,6 +178,7 @@ const bunting = Array.from({ length: 16 }, (_, i) => {
   .names a:hover { background:var(--pink); }
 
   .contact .lead { max-width:52ch; margin:-14px 0 30px; }
+  .banner { display:block; width:100%; height:auto; border-radius:18px; margin-bottom:34px; }
   .ways { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
   .way { display:flex; gap:18px; align-items:center; text-decoration:none; background:var(--bg2); border-radius:18px; padding:22px 24px; transition:transform .15s, background .15s; }
   .way:hover { transform:translateY(-3px); background:#262e8f; }
