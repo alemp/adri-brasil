@@ -26,7 +26,7 @@ const artist = {
   name: 'artist', title: 'Artist / production', type: 'document',
   fields: [
     { name: 'name', title: 'Name', type: 'string', validation: (r) => r.required() },
-    { name: 'kind', title: 'Type', type: 'string', options: { list: ['band', 'trio', 'dj'] } },
+    { name: 'kind', title: 'Type', type: 'string', options: { list: ['band', 'trio', 'dj', 'dance workshop'] } },
     { name: 'city', title: 'City', type: 'string' },
     { name: 'year', title: 'Year', type: 'number' },
     { name: 'photo', title: 'Photo', type: 'image', options: { hotspot: true } },
